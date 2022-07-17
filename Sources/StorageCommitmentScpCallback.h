@@ -2,6 +2,7 @@
  * Python plugin for Orthanc
  * Copyright (C) 2020-2022 Osimis S.A., Belgium
  * Copyright (C) 2021-2022 Sebastien Jodogne, ICTEAM UCLouvain, Belgium
+ * Copyright (C) 2022 Johnson Sun
  *
  * This program is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public License
@@ -12,7 +13,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  **/
@@ -22,30 +23,6 @@
 
 #include "PythonHeaderWrapper.h"
 
-#include <boost/noncopyable.hpp>
-#include <string>
+PyObject* RegisterStorageCommitmentScpCallback(PyObject* module, PyObject* args);
 
-class ICallbackRegistration : public boost::noncopyable
-{
-public:
-  virtual ~ICallbackRegistration()
-  {
-  }
-
-  virtual void Register() = 0;
-
-  // The GIL must be locked
-  static PyObject *Apply(ICallbackRegistration& registration,
-                         PyObject* args,
-                         PyObject*& singletonCallback,
-                         const std::string& details);
-
-  // The GIL must be locked
-  static PyObject *Apply2(ICallbackRegistration& registration,
-                          PyObject* args,
-                          PyObject*& singletonCallback1,
-                          PyObject*& singletonCallback2,
-                          const std::string& details);
-
-  static void Unregister(PyObject*& singletonCallback);
-};
+void FinalizeStorageCommitmentScpCallback();
